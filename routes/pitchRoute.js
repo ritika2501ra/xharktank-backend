@@ -11,7 +11,7 @@ router.get('/', async (req, res) => { //Response will all documents
         return res.status(200).json(pitchDoc)
     } catch (e) {
         console.error(e)
-        return res.status(500)
+        return res.status(500).send("Internal Server Error")
     }
 
 })
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => { //Response will all documents
 router.post('/', async (req, res) => { //Register a Pitches
     //TODO Validation of request body
     if(req.body.entrepreneur==null||req.body.pitchIdea==null||req.body.pitchTitle==null||req.body.askAmount==null||req.body.equity==null)
-    return res.status(400).send("Invalid Request Body")
+    return res.status(400).send("Bad Request")
     try {
         const newPitch = new Pitches({
             entrepreneur: req.body.entrepreneur,
@@ -57,7 +57,7 @@ router.get('/:id', async (req, res) => { //Response with Pitch with given ID and
 router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch 
     //TODO Validation of offer request body and pitch id
     if(req.body.investor==null||req.body.amount==null||req.body.equity==null||req.body.comment==null)
-    return res.status(400).send("Invalid request body")
+    return res.status(400).send("Bad Request")
     try {
         const pitchId = req.params.id
         const offer = new Offers({
@@ -69,6 +69,9 @@ router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch
         const offerDoc = await offer.save()
 
         const pitchDoc = await Pitches.findById(pitchId)
+        if(!pitchDoc){
+            return res.status(404).send("Not Found")
+        }
         pitchDoc.offers.push(offerDoc)
         await pitchDoc.save()
 

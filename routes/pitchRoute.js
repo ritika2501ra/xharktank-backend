@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => { //Response with Pitch with given ID and
         const pitchDoc = await Pitches.findById(req.params.id).populate('offers')
             .select("-createdAt").select('-updatedAt')
 
-        if (pitchDoc === null) {
+        if (pitchDoc == null) {
             return res.status(404).send('Pitch Not Found')
         }
         return res.status(200).json(pitchDoc)
@@ -69,7 +69,7 @@ router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch
         const offerDoc = await offer.save()
 
         const pitchDoc = await Pitches.findById(pitchId)
-        if(!pitchDoc){
+        if(pitchDoc==null){
             return res.status(404).send("Not Found")
         }
         pitchDoc.offers.push(offerDoc)

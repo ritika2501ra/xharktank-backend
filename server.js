@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    mongoose.connect('mongodb://127.0.0.1:27017/xharktank', {
-        seNewUrlParser: true,
+    mongoose.connect('mongodb://localhost/xharktank', {
+        useNewUrlParser: true,
         useUnifiedTopology: true,
         family: 4
 

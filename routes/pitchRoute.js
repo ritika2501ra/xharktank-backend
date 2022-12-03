@@ -75,7 +75,7 @@ router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch
         pitchDoc.offers.push(offerDoc)
         await pitchDoc.save()
 
-        return res.status(201).json({ id: pitchId })
+        return res.status(201).json({ id:offerDoc._id })
     } catch (e) {
         console.log(e)
         return res.status(500)

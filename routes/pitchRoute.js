@@ -56,10 +56,15 @@ router.get('/:id', async (req, res) => { //Response with Pitch with given ID and
 
 router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch 
     //TODO Validation of offer request body and pitch id
-    if(req.body.investor==null||req.body.amount==null||req.body.equity==null||req.body.comment==null)
-    return res.status(400).send("Bad Request")
+   
     try {
         const pitchId = req.params.id
+        const pitchDoc = await Pitches.findById(pitchId)
+        if(pitchDoc==null){
+            return res.status(404).send("Not Found")
+        }
+        if(req.body.investor==null||req.body.amount==null||req.body.equity==null||req.body.comment==null)
+        return res.status(400).send("Bad Request")
         const offer = new Offers({
             investor: req.body.investor,
             amount: req.body.amount,
@@ -68,10 +73,7 @@ router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch
         })
         const offerDoc = await offer.save()
 
-        const pitchDoc = await Pitches.findById(pitchId)
-        if(pitchDoc==null){
-            return res.status(404).send("Not Found")
-        }
+       
         pitchDoc.offers.push(offerDoc)
         await pitchDoc.save()
 

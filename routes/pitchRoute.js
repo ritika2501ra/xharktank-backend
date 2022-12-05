@@ -18,7 +18,7 @@ router.get('/', async (req, res) => { //Response will all documents
 
 router.post('/', async (req, res) => { //Register a Pitches
     //TODO Validation of request body
-    if(req.body.entrepreneur==null||req.body.pitchIdea==null||req.body.pitchTitle==null||req.body.askAmount==null||req.body.equity==null)
+    if(req.body.entrepreneur==null||req.body.pitchIdea==null||req.body.pitchTitle==null||req.body.askAmount==null||req.body.equity==null||req.body.equity>100||req.body.equity<0)
     return res.status(400).send("Bad Request")
     try {
         const newPitch = new Pitches({

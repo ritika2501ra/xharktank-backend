@@ -63,7 +63,7 @@ router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch
         if(pitchDoc==null){
             return res.status(404).send("Not Found")
         }
-        if(req.body.investor==null||req.body.amount==null||req.body.equity==null||req.body.comment==null)
+        if(req.body.investor==null||req.body.amount==null||req.body.equity==null||req.body.comment==null||req.body.equity>100||req.body.equity<0)
         return res.status(400).send("Bad Request")
         const offer = new Offers({
             investor: req.body.investor,

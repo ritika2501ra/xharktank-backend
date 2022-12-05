@@ -64,8 +64,14 @@ router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch
     try {
         const pitchId = req.params.id
         const pitchDoc = await Pitches.findById(pitchId)
+        try{
         if(pitchDoc==null){
             return res.status(404).send("Not Found")
+        }}
+        catch(e)
+        {
+            if(e.name==='CastError')
+            return res.status(404).send('pitch not found')
         }
 
         if(req.body.investor==null||req.body.amount==null||req.body.equity==null||req.body.comment==null||req.body.equity>100||req.body.equity<0)
@@ -84,6 +90,7 @@ router.post("/:id/makeOffer", async (req, res) => { //Response with id of pitch
 
         return res.status(201).json({ id:offerDoc._id })
     } catch (e) {
+        
         console.log(e)
         return res.status(500)
     }
